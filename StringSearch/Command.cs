@@ -62,20 +62,20 @@ namespace ADNPlugin.Revit.StringSearch
     /// Revit 2011, we implement it ourselves for 
     /// backwards compatibility.
     /// </summary>
-    ICollection<ElementId> GetSelectedElementIds( 
-      UIDocument uidoc )
-    {
-      SelElementSet ss = uidoc.Selection.Elements;
+    //ICollection<ElementId> GetSelectedElementIds( 
+    //  UIDocument uidoc )
+    //{
+    //  SelElementSet ss = uidoc.Selection.Elements;
 
-      List<ElementId> ids = new List<ElementId>( 
-        ss.Size );
+    //  List<ElementId> ids = new List<ElementId>( 
+    //    ss.Size );
 
-      foreach( Element e in ss )
-      {
-        ids.Add( e.Id );
-      }
-      return ids;
-    }
+    //  foreach( Element e in ss )
+    //  {
+    //    ids.Add( e.Id );
+    //  }
+    //  return ids;
+    //}
 
     /// <summary>
     /// External command mainline.
@@ -94,7 +94,7 @@ namespace ADNPlugin.Revit.StringSearch
       Application app = uiapp.Application;
       Document doc = uidoc.Document;
 
-      ICollection<ElementId> selids = GetSelectedElementIds( uidoc );
+      ICollection<ElementId> selids = uidoc.Selection.GetElementIds();
 
       try
       {
@@ -130,8 +130,8 @@ namespace ADNPlugin.Revit.StringSearch
                 ? new FilteredElementCollector( 
                   doc, doc.ActiveView.Id )
               : form.CurrentSelection 
-                ? new FilteredElementCollector( 
-                    doc, GetSelectedElementIds( uidoc ) )
+                ? new FilteredElementCollector( doc, 
+                    uidoc.Selection.GetElementIds() )
               : new FilteredElementCollector( doc );
 
             if( form.ElementType && form.NonElementType )
