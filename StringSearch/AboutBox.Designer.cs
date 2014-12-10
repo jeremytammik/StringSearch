@@ -110,7 +110,7 @@ namespace ADNPlugin.Revit.StringSearch
       this.labelCopyright.Name = "labelCopyright";
       this.labelCopyright.Size = new System.Drawing.Size( 434, 17 );
       this.labelCopyright.TabIndex = 21;
-      this.labelCopyright.Text = "Copyright © 2007-2009 by Jeremy Tammik, Autodesk, Inc.";
+      this.labelCopyright.Text = "Copyright © 2007-2013 by Jeremy Tammik, Autodesk, Inc.";
       this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
       // 
       // labelCompanyName

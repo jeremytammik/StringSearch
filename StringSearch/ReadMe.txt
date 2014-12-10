@@ -14,7 +14,7 @@ string.
 
 System Requirements
 -------------------
-This plugin has been tested with Revit Architecture 2013, and requires 
+This plugin has been tested with Revit Architecture 2014, and requires
 the .NET Framework 4. A pre-built version of the plug-in working on
 both 32- and 64-bit Windows systems is provided.
 
@@ -24,47 +24,27 @@ It is not required to run the plugin.
 
 Installation
 ------------
-The following steps are for using the plugin with Revit 2013.
+The following steps are for using the plugin with Revit 2014.
 
 1. If you are using Vista or Windows 7, first check whether the zip
 file needs to be unblocked. Right-click on the zip file and select
-"Properties". If you see an "Unblock" button, then click it. 
+"Properties". If you see an "Unblock" button, then click it.
 
 2. Copy the plugin module "ADNPlugin-StringSearch.dll" and the add-in
 manifest file "ADNPlugin-StringSearch.addin" to one of the following
-locations: 
+locations:
 
-For Windows XP: 
+  C:\Users\<your login>\AppData\Roaming\Autodesk\Revit\Addins\2014
 
-  C:\Documents and Settings\<your login>\Application Data\
-    Autodesk\Revit\Addins\2013
+or
 
-or 
-
-  C:\Documents and Settings\All Users\Application Data\
-    Autodesk\Revit\Addins\2013
-
+  C:\ProgramData\Autodesk\Revit\Addins\2014
 
 The first location will make the plugin available for your use only,
 while the second is for all users of your computer.
 
-** Note: The first location is recommended if you have security 
+** Note: The first location is recommended if you have security
 permission issues (e.g., when UAC is turned on).
-
-For Vista/Windows 7:
-
-  C:\Users\<your login>\AppData\Roaming\Autodesk\Revit\Addins\2013
-
-or 
-
-  C:\ProgramData\Autodesk\Revit\Addins\2013
-
-The first location will make the plugin available for your use only,
-while the second is for all users of your computer.
-
-** Note: The first location is recommended if you have security 
-permission issues (e.g., when UAC is turned on).
-
 
 If you decide on a different location for the DLL, please modify the
 following line in the add-in manifest file
@@ -74,83 +54,83 @@ following line in the add-in manifest file
 
 3. Once installed, the "String Search" command becomes available in
 Revit.  Go to the "Add-Ins" tab > "String Search" panel. It shows
-the "String Search" button to launch the command. 
+the "String Search" button to launch the command.
 
 
 Usage
 -----
-In Revit, click "Add-Ins" > "String Search" panel > "String Search" 
-to launch the command. 
+In Revit, click "Add-Ins" > "String Search" panel > "String Search"
+to launch the command.
 
 In the dialogue that appears, you can type in the search string in
-the 'Find what' text box. 
+the 'Find what' text box.
 
-Click 'OK'. The command will search for the given string on all 
+Click 'OK'. The command will search for the given string on all
 standard and user parameters of all elements in the current view.
 
-All occurrences of the search string are listed in a data grid view 
-in a modeless navigator dialogue. Double click on a row in the 
+All occurrences of the search string are listed in a data grid view
+in a modeless navigator dialogue. Double click on a row in the
 navigator to zoom to the element.
 
-A log file of the search operation and its results is created in 
-your temporary directory. To view the log file, right click on the 
+A log file of the search operation and its results is created in
+your temporary directory. To view the log file, right click on the
 search form and select 'Display Log File'.
 
-The string matching options and the elements and parameters to 
+The string matching options and the elements and parameters to
 search can be modified as follows.
 
 
 Options
 -------
-Category: Limit the search to elements belonging to a specific 
-category. All other categories will be skipped. Specify an 
+Category: Limit the search to elements belonging to a specific
+category. All other categories will be skipped. Specify an
 asterisk '*' to search all categories. This is the default setting.
 
-Parameter name: You can specify the name of a specific parameter 
-to search in. All other parameters will be skipped. Specify an 
+Parameter name: You can specify the name of a specific parameter
+to search in. All other parameters will be skipped. Specify an
 asterisk '*' to search all parameters. This is the default setting.
 
-Find options: Match case and match whole parameter limit the string 
-pattern matching to more specific cases, i.e. the upper and lower 
-case of each character must match, and the specified search string 
+Find options: Match case and match whole parameter limit the string
+pattern matching to more specific cases, i.e. the upper and lower
+case of each character must match, and the specified search string
 must match the entire parameter value.
 
-Element selection: You can search either the currently selected 
-element set, all elements in the current view, or all elements 
-in the entire project. The latter can be slow. 
+Element selection: You can search either the currently selected
+element set, all elements in the current view, or all elements
+in the entire project. The latter can be slow.
 
-Instances versus Types and Symbols: You can specify whether to 
-search in the BIM elements themselves, such as walls and family 
-instances, or in the element types, such as wall types and family 
-symbols. When searching element types, there is no way to limit the 
-search to selected elements (because they cannot be selected) or to 
-a view (because they are not displayed graphically). By default, all 
-elements in the current view are searched. Searching types is not 
-additional to instances, it is complementary. You can search either 
-element types (derived from ElementType in the API) or instances, 
+Instances versus Types and Symbols: You can specify whether to
+search in the BIM elements themselves, such as walls and family
+instances, or in the element types, such as wall types and family
+symbols. When searching element types, there is no way to limit the
+search to selected elements (because they cannot be selected) or to
+a view (because they are not displayed graphically). By default, all
+elements in the current view are searched. Searching types is not
+additional to instances, it is complementary. You can search either
+element types (derived from ElementType in the API) or instances,
 but not both at once.
 
-Parameter selection: You can select whether only standard built-in 
-Revit parameters are searched, or user-defined family and shared 
+Parameter selection: You can select whether only standard built-in
+Revit parameters are searched, or user-defined family and shared
 parameters, or both.
 
-Advanced: You have the option of using a regular expression to 
-specify the search string. This option is intended for users with 
+Advanced: You have the option of using a regular expression to
+specify the search string. This option is intended for users with
 advanced programming knowledge and is not suited for non-
-programmers. The .NET RegEx library is used for this. 
-For more detail about regular expression, please refer to the 
+programmers. The .NET RegEx library is used for this.
+For more detail about regular expression, please refer to the
 following link to a 'cheat sheet':
 
-  http://regexlib.com/cheatsheet.aspx  
+  http://regexlib.com/cheatsheet.aspx
 
-You can also search in BuiltInParameters, which are only visible 
-through the Revit API. Again, this option is intended for users with 
-advanced programming knowledge and is not suited for others. 
-With this option, the parameter selection option is ignored and 
-the 'Parameter name' setting switches to a list of all built-in 
+You can also search in BuiltInParameters, which are only visible
+through the Revit API. Again, this option is intended for users with
+advanced programming knowledge and is not suited for others.
+With this option, the parameter selection option is ignored and
+the 'Parameter name' setting switches to a list of all built-in
 parameters. Again, you can search in all of them using the asterisk
 '*', or pick a specific one. Searching all built-in parameters
-across the entire project can be extremely slow. 
+across the entire project can be extremely slow.
 
 
 Examples
@@ -159,11 +139,11 @@ To search for a string 'abc' in all parameter values of all elements
 in the current view, simply type in 'abc' as the search string and
 hit OK. If any occurrences are found, they are listed in the
 modeless navigator window. You can continue working in Revit as
-normal. If you double click an entry in the navigator, the Revit 
+normal. If you double click an entry in the navigator, the Revit
 screen will zoom in to the selected element and highlight it.
 
 To search for all structurally non-bearing walls, you might make use
-of the built-in parameter option as follows: 
+of the built-in parameter option as follows:
 
 - Enter the search string 'Non-bearing'
 - Under Category, select Walls
@@ -176,7 +156,7 @@ Click OK and examine the results in the navigator.
 Uninstallation
 --------------
 Simply removing "ADNPlugin-StringSearch.addin" file from your
-installation folder will uninstall the plugin. 
+installation folder will uninstall the plugin.
 
 
 Limitations and Known Issues
@@ -187,7 +167,7 @@ None.
 Author
 ------
 This plugin was written by Jeremy Tammik of the Autodesk Developer
-Technical Services team. 
+Technical Services team.
 
 
 Acknowledgements
@@ -212,7 +192,7 @@ Release History
 ---------------
 1.0  Original release
 2.0  Migrated to Revit 2013
-
+3.0  Migrated to Revit 2014
 
 Future Enhancement Wishes
 -------------------------
@@ -222,17 +202,17 @@ Future Enhancement Wishes
 - Support for search and replace.
 
 
-(C) Copyright 2011-2012 by Autodesk, Inc. 
+(C) Copyright 2011-2013 by Autodesk, Inc.
 
 Permission to use, copy, modify, and distribute this software in
-object code form for any purpose and without fee is hereby granted, 
-provided that the above copyright notice appears in all copies and 
+object code form for any purpose and without fee is hereby granted,
+provided that the above copyright notice appears in all copies and
 that both that copyright notice and the limited warranty and
-restricted rights notice below appear in all supporting 
+restricted rights notice below appear in all supporting
 documentation.
 
-AUTODESK PROVIDES THIS PROGRAM "AS IS" AND WITH ALL FAULTS. 
+AUTODESK PROVIDES THIS PROGRAM "AS IS" AND WITH ALL FAULTS.
 AUTODESK SPECIFICALLY DISCLAIMS ANY IMPLIED WARRANTY OF
-MERCHANTABILITY OR FITNESS FOR A PARTICULAR USE.  AUTODESK, INC. 
+MERCHANTABILITY OR FITNESS FOR A PARTICULAR USE.  AUTODESK, INC.
 DOES NOT WARRANT THAT THE OPERATION OF THE PROGRAM WILL BE
 UNINTERRUPTED OR ERROR FREE.
