@@ -1,4 +1,27 @@
-﻿#region Namespaces
+﻿#region Copyright
+// (C) Copyright 2011 by Autodesk, Inc. 
+//
+// Permission to use, copy, modify, and distribute this software
+// in object code form for any purpose and without fee is hereby
+// granted, provided that the above copyright notice appears in
+// all copies and that both that copyright notice and the limited
+// warranty and restricted rights notice below appear in all
+// supporting documentation.
+//
+// AUTODESK PROVIDES THIS PROGRAM "AS IS" AND WITH ALL FAULTS. 
+// AUTODESK SPECIFICALLY DISCLAIMS ANY IMPLIED WARRANTY OF
+// MERCHANTABILITY OR FITNESS FOR A PARTICULAR USE.  AUTODESK,
+// INC. DOES NOT WARRANT THAT THE OPERATION OF THE PROGRAM WILL
+// BE UNINTERRUPTED OR ERROR FREE.
+//
+// Use, duplication, or disclosure by the U.S. Government is
+// subject to restrictions set forth in FAR 52.227-19 (Commercial
+// Computer Software - Restricted Rights) and DFAR 252.227-7013(c)
+// (1)(ii)(Rights in Technical Data and Computer Software), as
+// applicable.
+#endregion // Copyright
+
+#region Namespaces
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,15 +31,19 @@ using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Events;
+using Autodesk.Revit.UI.Selection;
 using Application = Autodesk.Revit.ApplicationServices.Application;
-#endregion // Namespaces
+#endregion
 
-namespace StringSearch
+namespace ADNPlugin.Revit.StringSearch
 {
   [Transaction( TransactionMode.ReadOnly )]
-  [Regeneration( RegenerationOption.Manual )]
   public class Command : IExternalCommand
   {
+    static JtLogFile _log = null;
+    static SearchHitNavigator _navigator = null;
+    //static Process _logFileDisplay = null;
+
     #region Revit window handle
     /// <summary>
     /// Revit application window handle, used
@@ -75,88 +102,119 @@ namespace StringSearch
       Application app = uiapp.Application;
       Document doc = uidoc.Document;
 
-      // display search form:
-
-      SearchForm form = new SearchForm();
-
-      DialogResult r = form.ShowDialog();
-
-      if( DialogResult.Cancel == r )
+      try
       {
-        return Result.Cancelled;
-      }
+        if( null == _log )
+        {
+          _log = new JtLogFile( "SearchString" );
+        }
 
-      // run filtered element collector:
+        // display search form:
 
-      #region Set up filtered element collector
-      FilteredElementCollector a = form.CurrentView
-        ? new FilteredElementCollector( doc, doc.ActiveView.Id )
-        : new FilteredElementCollector( doc );
+        SearchForm form = new SearchForm( _log.Path );
 
-      if( form.ElementType && form.NonElementType )
-      {
-        a.WhereElementIsElementType();
+        DialogResult r = form.ShowDialog();
 
-        FilteredElementCollector b = form.CurrentView
-          ? new FilteredElementCollector( doc, doc.ActiveView.Id )
+        if( DialogResult.Cancel == r )
+        {
+          return Result.Cancelled;
+        }
+
+        // run filtered element collector:
+
+        #region Set up filtered element collector
+        FilteredElementCollector a 
+          = form.CurrentView ? new FilteredElementCollector( doc, doc.ActiveView.Id )
+          : form.CurrentSelection ? new FilteredElementCollector( doc, uidoc.Selection.GetElementIds() )
           : new FilteredElementCollector( doc );
 
-        b.WhereElementIsNotElementType();
+        if( form.ElementType && form.NonElementType )
+        {
+          a.WhereElementIsElementType();
 
-        a.UnionWith( b );
+          FilteredElementCollector b = form.CurrentView
+            ? new FilteredElementCollector( doc, doc.ActiveView.Id )
+            : new FilteredElementCollector( doc );
+
+          b.WhereElementIsNotElementType();
+
+          a.UnionWith( b );
+        }
+        else if( form.ElementType )
+        {
+          a.WhereElementIsElementType();
+        }
+        else if( form.NonElementType )
+        {
+          a.WhereElementIsNotElementType();
+        }
+        else
+        {
+          message = "Please select at least one or both of Element type and non-Element type.";
+          return Result.Failed;
+        }
+
+        if( !form.AllCategories )
+        {
+          BuiltInCategory bic
+            = (BuiltInCategory) Enum.Parse(
+              typeof( BuiltInCategory ),
+              form.CategoryName );
+
+          a.OfCategory( bic );
+        }
+        #endregion // Set up filtered element collector
+
+        // search element parameter data:
+
+        StringSearcher ss = new StringSearcher(
+          a, form.SearchOptions );
+
+        SortableBindingList<SearchHit> data = ss.Run( _log );
+
+        if( 0 == data.Count )
+        {
+          MessageBox.Show( "No occurrences found.", 
+            AboutBox.AssemblyProduct );
+
+          return Result.Succeeded;
+        }
+
+        if( null == _navigator )
+        {
+          // first time around, subscribe to Idling event
+
+          uiapp.Idling += new EventHandler<IdlingEventArgs>(
+            OnIdling );
+
+          // display data in modeless form and ensure
+          // that the form remains on top of Revit:
+
+          _navigator = new SearchHitNavigator(
+            new SetElementId( SetPendingElementId ) );
+
+          _navigator.Disposed += new EventHandler(
+            _navigator_Disposed );
+        }
+
+        _navigator.SetData( data );
+
+        if( !_navigator.Visible )
+        {
+          _navigator.Show( _hWndRevit );
+        }
+        return Result.Succeeded;
       }
-      else if( form.ElementType )
+      catch( Exception ex )
       {
-        a.WhereElementIsElementType();
-      }
-      else if( form.NonElementType )
-      {
-        a.WhereElementIsNotElementType();
-      }
-      else
-      {
-        message = "Please select ElementType, NonElementType, or both.";
+        message = ex.Message;
         return Result.Failed;
       }
+    }
 
-      if( !form.AllCategories )
-      {
-        BuiltInCategory bic 
-          = (BuiltInCategory) Enum.Parse( 
-            typeof( BuiltInCategory ), 
-            form.CategoryName );
-
-        a.OfCategory( bic );
-      }
-      #endregion // Set up filtered element collector
-
-      // search element parameter data:
-
-      StringSearcher ss = new StringSearcher( 
-        a, form.SearchOptions );
-
-      SortableBindingList<SearchHit> data = ss.Run();
-
-      // display log file:
-
-      Process.Start( ss.LogfilePath );
-
-      // display data in modeless form and ensure
-      // that the form remains on top of Revit:
-
-      SearchHitNavigator navigator
-        = new SearchHitNavigator(
-          data,
-          new SetElementId( SetPendingElementId ) );
-
-      navigator.Show( _hWndRevit );
-
-      // subscribe to Idling event:
-
-      uiapp.Idling += new EventHandler<IdlingEventArgs>(
-        OnIdling );
-
-      return Result.Succeeded;
+    void _navigator_Disposed( object sender, EventArgs e )
+    {
+      _navigator = null;
     }
     #endregion // Execute
 
@@ -178,11 +236,8 @@ namespace StringSearch
 
       if( 0 != id )
       {
-        Application app
-          = sender as Application;
-
         UIApplication uiapp
-          = new UIApplication( app );
+          = sender as UIApplication;
 
         UIDocument uidoc
           = uiapp.ActiveUIDocument;
@@ -195,7 +250,7 @@ namespace StringSearch
 
         Debug.Print(
           "Element id {0} requested --> {1}",
-          id, new ElementData( e, doc ) );
+          id, new ElementData( e ) );
 
         // look, mom, no transaction required!
 

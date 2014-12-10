@@ -1,4 +1,4 @@
-﻿namespace StringSearch
+﻿namespace ADNPlugin.Revit.StringSearch
 {
   partial class SearchHitNavigator
   {
@@ -29,12 +29,12 @@
     private void InitializeComponent()
     {
       this.dataGridView1 = new System.Windows.Forms.DataGridView();
-      ( ( System.ComponentModel.ISupportInitialize ) ( this.dataGridView1 ) ).BeginInit();
+      ( (System.ComponentModel.ISupportInitialize) ( this.dataGridView1 ) ).BeginInit();
       this.SuspendLayout();
       // 
       // dataGridView1
       // 
-      this.dataGridView1.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
+      this.dataGridView1.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
                   | System.Windows.Forms.AnchorStyles.Left )
                   | System.Windows.Forms.AnchorStyles.Right ) ) );
       this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -42,18 +42,18 @@
       this.dataGridView1.MultiSelect = false;
       this.dataGridView1.Name = "dataGridView1";
       this.dataGridView1.ReadOnly = true;
-      this.dataGridView1.Size = new System.Drawing.Size( 602, 108 );
+      this.dataGridView1.Size = new System.Drawing.Size( 602, 107 );
       this.dataGridView1.TabIndex = 1;
       // 
       // SearchHitNavigator
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size( 602, 106 );
+      this.ClientSize = new System.Drawing.Size( 602, 110 );
       this.Controls.Add( this.dataGridView1 );
       this.Name = "SearchHitNavigator";
       this.Text = "Search Hit Navigator";
-      ( ( System.ComponentModel.ISupportInitialize ) ( this.dataGridView1 ) ).EndInit();
+      ( (System.ComponentModel.ISupportInitialize) ( this.dataGridView1 ) ).EndInit();
       this.ResumeLayout( false );
 
     }
