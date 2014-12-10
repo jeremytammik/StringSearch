@@ -1,5 +1,5 @@
 ﻿#region Copyright
-// (C) Copyright 2011-2012 by Autodesk, Inc. 
+// (C) Copyright 2011 by Autodesk, Inc. 
 //
 // Permission to use, copy, modify, and distribute this software
 // in object code form for any purpose and without fee is hereby
@@ -23,28 +23,46 @@
 
 #region Namespaces
 using System;
-using System.Drawing;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Reflection;
-using System.Collections.Generic;
 using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using Autodesk.Revit.UI.Events;
 #endregion
 
 namespace ADNPlugin.Revit.StringSearch
 {
+  /// <summary>
+  /// String search external application implementation 
+  /// compatible with both Revit 2011 and 2012 API.
+  /// </summary>
+  [Regeneration( RegenerationOption.Manual )] // 2011
   class App : IExternalApplication
   {
     const string _name = "StringSearch";
+
+    const string _tooltip_long_description
+      = "Search for a given string within element parameter values."
+      + "\r\n\r\nSpecify the target string to search for and various options to select the elements and parameters to examine.";
 
     static string _text = AboutBox.AssemblyProduct;
 
     static string _namespace_prefix 
       = typeof( App ).Namespace + ".";
 
+    #region Revit window handle
+    /// <summary>
+    /// Revit application window handle, used
+    /// as parent for modeless dialogue.
+    /// </summary>
+    static JtWindowHandle _hWndRevit = null;
+    #endregion // Revit window handle
+
+    #region Load bitmap from embedded resources
     /// <summary>
     /// Load a new icon bitmap from embedded resources.
     /// For the BitmapImage, make sure you reference 
@@ -55,12 +73,8 @@ namespace ADNPlugin.Revit.StringSearch
       Assembly a, 
       string imageName )
     {
-      // to read from an external file:
-      //return new BitmapImage( new Uri(
-      //  Path.Combine( _imageFolder, imageName ) ) );
-
       Stream s = a.GetManifestResourceStream(
-          _namespace_prefix + imageName );
+         _namespace_prefix + imageName );
 
       BitmapImage img = new BitmapImage();
 
@@ -70,36 +84,207 @@ namespace ADNPlugin.Revit.StringSearch
 
       return img;
     }
+    #endregion // Load bitmap from embedded resources
+
+    static UIControlledApplication _a;
 
     public Result OnStartup( UIControlledApplication a )
     {
+      _a = a;
+
+      #region Revit window handle
+      // Set up IWin32Window instance encapsulating 
+      // main Revit application window handle:
+
+      Process process = Process.GetCurrentProcess();
+
+      IntPtr h = process.MainWindowHandle;
+
+      _hWndRevit = new JtWindowHandle( h );
+      #endregion // Revit window handle
+
+      #region Create ribbon panel
       Assembly exe = AboutBox.ExecutingAssembly;
       string path = exe.Location;
 
-      string className = GetType().FullName.Replace( 
-        "App", "Command"  );
+      string className = GetType().FullName.Replace(
+        "App", "Command" );
 
       RibbonPanel rp = a.CreateRibbonPanel( _text );
 
-      PushButtonData d = new PushButtonData( 
+      PushButtonData d = new PushButtonData(
         _name, _text, path, className );
 
-      d.ToolTip = AboutBox.AssemblyDescription 
+      d.ToolTip = AboutBox.AssemblyDescription
         ?? _text;
 
-      d.Image = NewBitmapImage( exe, "ImgSherlockHolmes16.png" );
-      d.LargeImage = NewBitmapImage( exe, "ImgSherlockHolmes32.png" );
-      d.ToolTipImage = NewBitmapImage( exe, "ImgSherlockHolmes.png" );
-      d.LongDescription = "This is a longer tooltip description";
+      d.Image = NewBitmapImage( exe, "ImgStringSearch16.png" );
+      d.LargeImage = NewBitmapImage( exe, "ImgStringSearch32.png" );
+      d.LongDescription = _tooltip_long_description;
+
+      // F1 help 
+      string path2;
+      path2 = System.IO.Path.GetDirectoryName(
+         System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+      ContextualHelp contextHelp = new ContextualHelp(
+          ContextualHelpType.ChmFile,
+          path2 + "/Resources/ADNStringSearchHelp.htm"); // hard coding for simplicity. 
+
+      d.SetContextualHelp(contextHelp);
+
 
       rp.AddItem( d );
+      #endregion // Create ribbon panel
 
       return Result.Succeeded;
     }
 
     public Result OnShutdown( UIControlledApplication a )
     {
+      SearchHitNavigator.Shutdown();
+
+      Unsubscribe();
+
       return Result.Succeeded;
     }
+
+    #region Display modeless search result navigator form
+    /// <summary>
+    /// Display a modeless dialogue with entries for all search hits.
+    /// Pass in the Revit application window handle and a delegate 
+    /// method allowing the dialogue to pass back a pending element 
+    /// id, which will be an element that the user wishes to zoom to.
+    /// Subscribe to the Idling event.
+    /// The modeless dialogue passes back the pending element id.
+    /// In the event handler, the pending element id is picked up
+    /// and displayed to the user on the Revit graphics screen.
+    /// </summary>
+    public static void ShowForm(
+      SortableBindingList<SearchHit> data )
+    {
+      SearchHitNavigator.Show( data,
+        new SetElementId( SetPendingElementId ),
+        _hWndRevit );
+
+      Subscribe();
+    }
+    #endregion // Display modeless search result navigator form
+
+    #region Pending element id
+    /// <summary>
+    /// Pending element id, element to zoom to
+    /// next time the Idling event fires.
+    /// </summary>
+    static int _pending_element_id;
+
+    /// <summary>
+    /// Set a pending element id to zoom to
+    /// when the Idling event fires.
+    /// </summary>
+    static void SetPendingElementId( int id )
+    {
+      _pending_element_id = id;
+    }
+
+    /// <summary>
+    /// Delegate to set a pending 
+    /// element id to zoom to.
+    /// </summary>
+    public delegate void SetElementId( int id );
+    #endregion // Pending element id
+
+    #region OnIdling
+    /// <summary>
+    /// Keep track of our subscription status.
+    /// </summary>
+    static bool _subscribing = false;
+
+    /// <summary>
+    /// Subscribe to the Idling event if not yet already done.
+    /// </summary>
+    static void Subscribe()
+    {
+      if( !_subscribing )
+      {
+        _a.Idling
+          += new EventHandler<IdlingEventArgs>(
+            OnIdling );
+
+        _subscribing = true;
+      }
+    }
+
+    /// <summary>
+    /// Unsubscribe from the Idling event 
+    /// if we are currently subscribed.
+    /// </summary>
+    static void Unsubscribe()
+    {
+      if( _subscribing )
+      {
+        _a.Idling
+          -= new EventHandler<IdlingEventArgs>(
+            OnIdling );
+
+        _subscribing = false;
+      }
+    }
+
+    /// <summary>
+    /// Revit Idling event handler.
+    /// Whenever the user has selected an element to 
+    /// zoom to in the modeless dialogue, the pending
+    /// element id is set. The event handler picks it
+    /// up and zooms to it. We are not modifying the
+    /// Revit document, so it seems we can get away 
+    /// with not starting a transaction.
+    /// </summary>
+    static void OnIdling(
+      object sender,
+      IdlingEventArgs ea )
+    {
+      if( !SearchHitNavigator.IsShowing )
+      {
+        Unsubscribe();
+      }
+
+      int id = _pending_element_id;
+
+      if( 0 != id )
+      {
+        // Support both 2011, where sender is an 
+        // Application instance, and 2012, where 
+        // it is a UIApplication instance:
+
+        UIApplication uiapp
+          = sender is UIApplication
+          ? sender as UIApplication // 2012
+          : new UIApplication(
+              sender as Application ); // 2011
+
+        UIDocument uidoc
+          = uiapp.ActiveUIDocument;
+
+        Document doc
+          = uidoc.Document;
+
+        ElementId eid = new ElementId( id );
+        Element e = doc.get_Element( eid );
+
+        Debug.Print(
+          "Element id {0} requested --> {1}",
+          id, new ElementData( e ) );
+
+        // No transaction required:
+
+        uidoc.Selection.Elements.Clear();
+        uidoc.Selection.Elements.Add( e );
+        uidoc.ShowElements( e );
+
+        _pending_element_id = 0;
+      }
+    }
+    #endregion // OnIdling
   }
 }

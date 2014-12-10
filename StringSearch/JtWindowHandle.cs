@@ -31,6 +31,7 @@ namespace ADNPlugin.Revit.StringSearch
 {
   /// <summary>
   /// Wrapper class for converting IntPtr to IWin32Window.
+  /// Used to attach modeless dialogue to Revit main window.
   /// </summary>
   public class JtWindowHandle : IWin32Window
   {

@@ -30,67 +30,59 @@ using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Autodesk.Revit.UI.Events;
 using Autodesk.Revit.UI.Selection;
 using Application = Autodesk.Revit.ApplicationServices.Application;
 #endregion
 
 namespace ADNPlugin.Revit.StringSearch
 {
+  /// <summary>
+  /// String search external command implementation 
+  /// compatible with both Revit 2011 and 2012 API.
+  /// </summary>
+  [Regeneration( RegenerationOption.Manual )] // 2011
   [Transaction( TransactionMode.ReadOnly )]
   public class Command : IExternalCommand
   {
-    static JtLogFile _log = null;
-    static SearchHitNavigator _navigator = null;
-    //static Process _logFileDisplay = null;
-
-    #region Revit window handle
     /// <summary>
-    /// Revit application window handle, used
-    /// as parent for modeless dialogue.
+    /// Display an informational message.
     /// </summary>
-    static JtWindowHandle _hWndRevit = null;
-    #endregion // Revit window handle
-
-    #region Pending element id
-    /// <summary>
-    /// Pending element id, element to zoom to
-    /// next time the Idling event fires.
-    /// </summary>
-    static int _pending_element_id;
-
-    /// <summary>
-    /// Set a pending element id to zoom to
-    /// when the Idling event fires.
-    /// </summary>
-    static void SetPendingElementId( int id )
+    static public void InfoMsg( string msg )
     {
-      _pending_element_id = id;
+      TaskDialog.Show( 
+        AboutBox.AssemblyProduct, 
+        msg );
     }
 
-    /// <summary>
-    /// Delegate to set a pending 
-    /// element id to zoom to.
-    /// </summary>
-    public delegate void SetElementId( int id );
-    #endregion // Pending element id
-
     #region Execute
+    /// <summary>
+    /// The Revit 2012 API provides the new method
+    /// Autodesk.Revit.UI.Selection.GetElementIds
+    /// returning an ICollection of ElementId. In 
+    /// Revit 2011, we implement it ourselves for 
+    /// backwards compatibility.
+    /// </summary>
+    ICollection<ElementId> GetSelectedElementIds( 
+      UIDocument uidoc )
+    {
+      SelElementSet ss = uidoc.Selection.Elements;
+
+      List<ElementId> ids = new List<ElementId>( 
+        ss.Size );
+
+      foreach( Element e in ss )
+      {
+        ids.Add( e.Id );
+      }
+      return ids;
+    }
+
     /// <summary>
     /// External command mainline.
     /// Determine Revit application window handle.
     /// Prompt user for search string and options.
     /// Retrieve all requested elements and search their parameters.
     /// List the result in a log file and a data container.
-    /// Display the log file.
-    /// Start a modeless dialogue with entries for all search hits.
-    /// Pass in the Revit application window handle and a delegate method
-    /// allowing the dialogue to pass back a pending element id, which will
-    /// be an element that the user wishes to zoom to.
-    /// Subscribe to the Idling event.
-    /// The modeless dialogue passes back the pending element id.
-    /// In the event handler, the pending element id is picked up
-    /// and displayed to the user on the Revit graphics screen.
     /// </summary>
     public Result Execute(
       ExternalCommandData commandData,
@@ -102,108 +94,119 @@ namespace ADNPlugin.Revit.StringSearch
       Application app = uiapp.Application;
       Document doc = uidoc.Document;
 
+      ICollection<ElementId> selids = GetSelectedElementIds( uidoc );
+
       try
       {
-        if( null == _log )
+        using( JtLogFile log = new JtLogFile( "SearchString" ) )
         {
-          _log = new JtLogFile( "SearchString" );
-        }
+          SortableBindingList<SearchHit> data = null;
 
-        // display search form:
+          while( null == data || 0 == data.Count )
+          {
+            // Display search form:
 
-        SearchForm form = new SearchForm( _log.Path );
+            SearchForm form = new SearchForm( log.Path );
 
-        DialogResult r = form.ShowDialog();
+            DialogResult r = form.ShowDialog();
 
-        if( DialogResult.Cancel == r )
-        {
-          return Result.Cancelled;
-        }
+            if( DialogResult.Cancel == r )
+            {
+              message = string.Empty;
+              return Result.Cancelled;
+            }
 
-        // run filtered element collector:
+            if( form.CurrentSelection && 0 == selids.Count )
+            {
+              InfoMsg( "Sorry; you cannot search the current element selection, because it is empty." );
+              continue;
+            }
 
-        #region Set up filtered element collector
-        FilteredElementCollector a 
-          = form.CurrentView ? new FilteredElementCollector( doc, doc.ActiveView.Id )
-          : form.CurrentSelection ? new FilteredElementCollector( doc, uidoc.Selection.GetElementIds() )
-          : new FilteredElementCollector( doc );
+            // Run filtered element collector:
 
-        if( form.ElementType && form.NonElementType )
-        {
-          a.WhereElementIsElementType();
+            #region Set up filtered element collector
+            FilteredElementCollector a
+              = form.CurrentView 
+                ? new FilteredElementCollector( 
+                  doc, doc.ActiveView.Id )
+              : form.CurrentSelection 
+                ? new FilteredElementCollector( 
+                    doc, GetSelectedElementIds( uidoc ) )
+              : new FilteredElementCollector( doc );
 
-          FilteredElementCollector b = form.CurrentView
-            ? new FilteredElementCollector( doc, doc.ActiveView.Id )
-            : new FilteredElementCollector( doc );
+            if( form.ElementType && form.NonElementType )
+            {
+              a.WhereElementIsElementType();
 
-          b.WhereElementIsNotElementType();
+              FilteredElementCollector b = form.CurrentView
+                ? new FilteredElementCollector( doc, doc.ActiveView.Id )
+                : new FilteredElementCollector( doc );
 
-          a.UnionWith( b );
-        }
-        else if( form.ElementType )
-        {
-          a.WhereElementIsElementType();
-        }
-        else if( form.NonElementType )
-        {
-          a.WhereElementIsNotElementType();
-        }
-        else
-        {
-          message = "Please select at least one or both of Element type and non-Element type.";
-          return Result.Failed;
-        }
+              b.WhereElementIsNotElementType();
 
-        if( !form.AllCategories )
-        {
-          BuiltInCategory bic
-            = (BuiltInCategory) Enum.Parse(
-              typeof( BuiltInCategory ),
-              form.CategoryName );
+              a.UnionWith( b );
+            }
+            else if( form.ElementType )
+            {
+              a.WhereElementIsElementType();
+            }
+            else if( form.NonElementType )
+            {
+              a.WhereElementIsNotElementType();
+            }
+            else
+            {
+              message = "Please select at least one or both of Element type and non-Element type.";
+              return Result.Failed;
+            }
 
-          a.OfCategory( bic );
-        }
-        #endregion // Set up filtered element collector
+            if( !form.AllCategories )
+            {
+              BuiltInCategory bic
+                = ( BuiltInCategory ) Enum.Parse(
+                  typeof( BuiltInCategory ),
+                  form.CategoryName );
 
-        // search element parameter data:
+              a.OfCategory( bic );
+            }
+            #endregion // Set up filtered element collector
 
-        StringSearcher ss = new StringSearcher(
-          a, form.SearchOptions );
+            // Search element parameter data:
 
-        SortableBindingList<SearchHit> data = ss.Run( _log );
+            StringSearcher ss = new StringSearcher(
+              a, form.SearchOptions );
 
-        if( 0 == data.Count )
-        {
-          MessageBox.Show( "No occurrences found.", 
-            AboutBox.AssemblyProduct );
+            try
+            {
+              data = ss.Run( log, out message );
+
+              if( 0 == data.Count )
+              {
+                InfoMsg( 0 < message.Length ? message : 
+                  "No occurrences found." );
+              }
+            }
+            catch( ArgumentException ex )
+            {
+              if( ex.StackTrace.Contains( 
+                "RegularExpressions.RegexParser.ScanRegex" ) )
+              {
+                InfoMsg( "Invalid regular expression. Error message:\r\n"
+                  + ex.Message
+                  + "\r\nIf you don't know what a regular expression is, don't use it"
+                  + "\r\n(cheat sheet: http://regexlib.com/cheatsheet.aspx)." );
+              }
+              else
+              {
+                throw ex;
+              }
+            }
+          }
+
+          App.ShowForm( data );
 
           return Result.Succeeded;
         }
-
-        if( null == _navigator )
-        {
-          // first time around, subscribe to Idling event
-
-          uiapp.Idling += new EventHandler<IdlingEventArgs>(
-            OnIdling );
-
-          // display data in modeless form and ensure
-          // that the form remains on top of Revit:
-
-          _navigator = new SearchHitNavigator(
-            new SetElementId( SetPendingElementId ) );
-
-          _navigator.Disposed += new EventHandler(
-            _navigator_Disposed );
-        }
-
-        _navigator.SetData( data );
-
-        if( !_navigator.Visible )
-        {
-          _navigator.Show( _hWndRevit );
-        }
-        return Result.Succeeded;
       }
       catch( Exception ex )
       {
@@ -211,56 +214,6 @@ namespace ADNPlugin.Revit.StringSearch
         return Result.Failed;
       }
     }
-
-    void _navigator_Disposed( object sender, EventArgs e )
-    {
-      _navigator = null;
-    }
     #endregion // Execute
-
-    #region OnIdling
-    /// <summary>
-    /// Revit Idling event handler.
-    /// Whenever the user has selected an element to 
-    /// zoom to in the modeless dialogue, the pending
-    /// element id is set. The event handler picks it
-    /// up and zooms to it. We are not modifying the
-    /// Revit document, so it seems we can get away 
-    /// with not starting a transaction.
-    /// </summary>
-    void OnIdling(
-      object sender,
-      IdlingEventArgs ea )
-    {
-      int id = _pending_element_id;
-
-      if( 0 != id )
-      {
-        UIApplication uiapp
-          = sender as UIApplication;
-
-        UIDocument uidoc
-          = uiapp.ActiveUIDocument;
-
-        Document doc
-          = uidoc.Document;
-
-        ElementId eid = new ElementId( id );
-        Element e = doc.get_Element( eid );
-
-        Debug.Print(
-          "Element id {0} requested --> {1}",
-          id, new ElementData( e ) );
-
-        // look, mom, no transaction required!
-
-        uidoc.Selection.Elements.Clear();
-        uidoc.Selection.Elements.Add( e );
-        uidoc.ShowElements( e );
-
-        _pending_element_id = 0;
-      }
-    }
-    #endregion // OnIdling
   }
 }

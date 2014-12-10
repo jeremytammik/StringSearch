@@ -2,7 +2,7 @@
 <RevitAddIns>
   <AddIn Type="Application">
     <Name>StringSearch</Name>
-    <Assembly>C:\a\src\revit\plugin\string_search\src\Source\StringSearch\bin\debug\ADNPlugin-StringSearch.dll</Assembly>
+    <Assembly>ADNPlugin-StringSearch.dll</Assembly>
     <FullClassName>ADNPlugin.Revit.StringSearch.App</FullClassName>
     <ClientId>bfad99cf-0d2d-4eb5-93f4-60942372fce8</ClientId>
     <VendorId>ADNP</VendorId>

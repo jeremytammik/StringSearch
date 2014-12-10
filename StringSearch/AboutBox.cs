@@ -40,7 +40,7 @@ namespace ADNPlugin.Revit.StringSearch
       // Change assembly information settings for your 
       // application through either Project > Properties 
       // > Application > Assembly Information or
-      // by editing AssemblyInfo.cs
+      // by editing AssemblyInfo.cs.
 
       Text = "About " + AssemblyTitle;
       labelProductName.Text = AssemblyProduct;

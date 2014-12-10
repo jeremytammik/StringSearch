@@ -37,7 +37,7 @@ namespace ADNPlugin.Revit.StringSearch
       this.textBoxDescription = new System.Windows.Forms.TextBox();
       this.okButton = new System.Windows.Forms.Button();
       this.tableLayoutPanel.SuspendLayout();
-      ( (System.ComponentModel.ISupportInitialize) ( this.logoPictureBox ) ).BeginInit();
+      ( ( System.ComponentModel.ISupportInitialize ) ( this.logoPictureBox ) ).BeginInit();
       this.SuspendLayout();
       // 
       // tableLayoutPanel
@@ -62,17 +62,17 @@ namespace ADNPlugin.Revit.StringSearch
       this.tableLayoutPanel.RowStyles.Add( new System.Windows.Forms.RowStyle( System.Windows.Forms.SizeType.Percent, 7F ) );
       this.tableLayoutPanel.RowStyles.Add( new System.Windows.Forms.RowStyle( System.Windows.Forms.SizeType.Percent, 60F ) );
       this.tableLayoutPanel.RowStyles.Add( new System.Windows.Forms.RowStyle( System.Windows.Forms.SizeType.Percent, 12F ) );
-      this.tableLayoutPanel.Size = new System.Drawing.Size( 622, 265 );
+      this.tableLayoutPanel.Size = new System.Drawing.Size( 660, 265 );
       this.tableLayoutPanel.TabIndex = 0;
       // 
       // logoPictureBox
       // 
       this.logoPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.logoPictureBox.Image = ( (System.Drawing.Image) ( resources.GetObject( "logoPictureBox.Image" ) ) );
+      this.logoPictureBox.Image = ( ( System.Drawing.Image ) ( resources.GetObject( "logoPictureBox.Image" ) ) );
       this.logoPictureBox.Location = new System.Drawing.Point( 3, 3 );
       this.logoPictureBox.Name = "logoPictureBox";
       this.tableLayoutPanel.SetRowSpan( this.logoPictureBox, 6 );
-      this.logoPictureBox.Size = new System.Drawing.Size( 199, 259 );
+      this.logoPictureBox.Size = new System.Drawing.Size( 211, 259 );
       this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
       this.logoPictureBox.TabIndex = 12;
       this.logoPictureBox.TabStop = false;
@@ -80,11 +80,11 @@ namespace ADNPlugin.Revit.StringSearch
       // labelProductName
       // 
       this.labelProductName.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.labelProductName.Location = new System.Drawing.Point( 211, 0 );
+      this.labelProductName.Location = new System.Drawing.Point( 223, 0 );
       this.labelProductName.Margin = new System.Windows.Forms.Padding( 6, 0, 3, 0 );
       this.labelProductName.MaximumSize = new System.Drawing.Size( 0, 17 );
       this.labelProductName.Name = "labelProductName";
-      this.labelProductName.Size = new System.Drawing.Size( 408, 17 );
+      this.labelProductName.Size = new System.Drawing.Size( 434, 17 );
       this.labelProductName.TabIndex = 19;
       this.labelProductName.Text = "Product Name";
       this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -92,11 +92,11 @@ namespace ADNPlugin.Revit.StringSearch
       // labelVersion
       // 
       this.labelVersion.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.labelVersion.Location = new System.Drawing.Point( 211, 18 );
+      this.labelVersion.Location = new System.Drawing.Point( 223, 18 );
       this.labelVersion.Margin = new System.Windows.Forms.Padding( 6, 0, 3, 0 );
       this.labelVersion.MaximumSize = new System.Drawing.Size( 0, 17 );
       this.labelVersion.Name = "labelVersion";
-      this.labelVersion.Size = new System.Drawing.Size( 408, 17 );
+      this.labelVersion.Size = new System.Drawing.Size( 434, 17 );
       this.labelVersion.TabIndex = 0;
       this.labelVersion.Text = "Version";
       this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -104,11 +104,11 @@ namespace ADNPlugin.Revit.StringSearch
       // labelCopyright
       // 
       this.labelCopyright.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.labelCopyright.Location = new System.Drawing.Point( 211, 36 );
+      this.labelCopyright.Location = new System.Drawing.Point( 223, 36 );
       this.labelCopyright.Margin = new System.Windows.Forms.Padding( 6, 0, 3, 0 );
       this.labelCopyright.MaximumSize = new System.Drawing.Size( 0, 17 );
       this.labelCopyright.Name = "labelCopyright";
-      this.labelCopyright.Size = new System.Drawing.Size( 408, 17 );
+      this.labelCopyright.Size = new System.Drawing.Size( 434, 17 );
       this.labelCopyright.TabIndex = 21;
       this.labelCopyright.Text = "Copyright © 2007-2009 by Jeremy Tammik, Autodesk, Inc.";
       this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -116,11 +116,11 @@ namespace ADNPlugin.Revit.StringSearch
       // labelCompanyName
       // 
       this.labelCompanyName.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.labelCompanyName.Location = new System.Drawing.Point( 211, 54 );
+      this.labelCompanyName.Location = new System.Drawing.Point( 223, 54 );
       this.labelCompanyName.Margin = new System.Windows.Forms.Padding( 6, 0, 3, 0 );
       this.labelCompanyName.MaximumSize = new System.Drawing.Size( 0, 17 );
       this.labelCompanyName.Name = "labelCompanyName";
-      this.labelCompanyName.Size = new System.Drawing.Size( 408, 17 );
+      this.labelCompanyName.Size = new System.Drawing.Size( 434, 17 );
       this.labelCompanyName.TabIndex = 22;
       this.labelCompanyName.Text = "Company Name";
       this.labelCompanyName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -128,22 +128,22 @@ namespace ADNPlugin.Revit.StringSearch
       // textBoxDescription
       // 
       this.textBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.textBoxDescription.Location = new System.Drawing.Point( 211, 75 );
+      this.textBoxDescription.Location = new System.Drawing.Point( 223, 75 );
       this.textBoxDescription.Margin = new System.Windows.Forms.Padding( 6, 3, 3, 3 );
       this.textBoxDescription.Multiline = true;
       this.textBoxDescription.Name = "textBoxDescription";
       this.textBoxDescription.ReadOnly = true;
       this.textBoxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-      this.textBoxDescription.Size = new System.Drawing.Size( 408, 153 );
+      this.textBoxDescription.Size = new System.Drawing.Size( 434, 153 );
       this.textBoxDescription.TabIndex = 23;
       this.textBoxDescription.TabStop = false;
       this.textBoxDescription.Text = "Description";
       // 
       // okButton
       // 
-      this.okButton.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right ) ) );
+      this.okButton.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right ) ) );
       this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      this.okButton.Location = new System.Drawing.Point( 544, 240 );
+      this.okButton.Location = new System.Drawing.Point( 582, 240 );
       this.okButton.Name = "okButton";
       this.okButton.Size = new System.Drawing.Size( 75, 22 );
       this.okButton.TabIndex = 24;
@@ -154,9 +154,10 @@ namespace ADNPlugin.Revit.StringSearch
       this.AcceptButton = this.okButton;
       this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size( 640, 283 );
+      this.ClientSize = new System.Drawing.Size( 678, 283 );
       this.Controls.Add( this.tableLayoutPanel );
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+      this.Icon = ( ( System.Drawing.Icon ) ( resources.GetObject( "$this.Icon" ) ) );
       this.MaximizeBox = false;
       this.MinimizeBox = false;
       this.Name = "AboutBox";
@@ -164,10 +165,10 @@ namespace ADNPlugin.Revit.StringSearch
       this.ShowIcon = false;
       this.ShowInTaskbar = false;
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-      this.Text = "AboutBox";
+      this.Text = "About Revit String Search";
       this.tableLayoutPanel.ResumeLayout( false );
       this.tableLayoutPanel.PerformLayout();
-      ( (System.ComponentModel.ISupportInitialize) ( this.logoPictureBox ) ).EndInit();
+      ( ( System.ComponentModel.ISupportInitialize ) ( this.logoPictureBox ) ).EndInit();
       this.ResumeLayout( false );
 
     }

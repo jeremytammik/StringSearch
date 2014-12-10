@@ -28,13 +28,14 @@
     /// </summary>
     private void InitializeComponent()
     {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( SearchHitNavigator ) );
       this.dataGridView1 = new System.Windows.Forms.DataGridView();
-      ( (System.ComponentModel.ISupportInitialize) ( this.dataGridView1 ) ).BeginInit();
+      ( ( System.ComponentModel.ISupportInitialize ) ( this.dataGridView1 ) ).BeginInit();
       this.SuspendLayout();
       // 
       // dataGridView1
       // 
-      this.dataGridView1.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
+      this.dataGridView1.Anchor = ( ( System.Windows.Forms.AnchorStyles ) ( ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
                   | System.Windows.Forms.AnchorStyles.Left )
                   | System.Windows.Forms.AnchorStyles.Right ) ) );
       this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -51,9 +52,10 @@
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size( 602, 110 );
       this.Controls.Add( this.dataGridView1 );
+      this.Icon = ( ( System.Drawing.Icon ) ( resources.GetObject( "$this.Icon" ) ) );
       this.Name = "SearchHitNavigator";
       this.Text = "Search Hit Navigator";
-      ( (System.ComponentModel.ISupportInitialize) ( this.dataGridView1 ) ).EndInit();
+      ( ( System.ComponentModel.ISupportInitialize ) ( this.dataGridView1 ) ).EndInit();
       this.ResumeLayout( false );
 
     }

@@ -73,7 +73,7 @@ namespace ADNPlugin.Revit.StringSearch
 
       Name = e.Name;
 
-      // this is not valid for electrical panels, which 
+      // This is not valid for electrical panels, which 
       // may have something like "EP-2" versus "400 A":
       //
       //Debug.Assert( Name.Equals( Symbol ), 
@@ -106,7 +106,7 @@ namespace ADNPlugin.Revit.StringSearch
     /// <summary>
     /// Built-in parameter name, if applicable.
     /// </summary>
-    public string BipName { get; set; }
+    string BipName { get; set; }
 
     /// <summary>
     /// Parameter name.

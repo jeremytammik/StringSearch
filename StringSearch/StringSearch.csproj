@@ -3,20 +3,23 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>
-    </ProductVersion>
-    <SchemaVersion>
-    </SchemaVersion>
-    <ProjectGuid>{999A6946-B760-453E-ABEA-19B61D47CA5D}</ProjectGuid>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AC27579A-374A-41D3-9B7C-245366018F46}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ADNPlugin.Revit.StringSearch</RootNamespace>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AssemblyName>ADNPlugin-StringSearch</AssemblyName>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -38,54 +41,63 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;searching for a text book image</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <StartAction>Program</StartAction>
-    <StartProgram>$(ProgramFiles)\Autodesk\Revit Architecture 2012\Program\Revit.exe</StartProgram>
+    <StartProgram>$(ProgramFiles)\Autodesk\Revit Architecture 2011\Program\Revit.exe</StartProgram>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <StartAction>Program</StartAction>
-    <StartProgram>$(ProgramFiles)\Autodesk\Revit Architecture 2012\Program\Revit.exe</StartProgram>
+    <StartProgram>$(ProgramFiles)\Autodesk\Revit Architecture 2011\Program\Revit.exe</StartProgram>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyName>ADNPlugin-StringSearch</AssemblyName>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="RevitAPI, Version=2012.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ProgramFiles)\Autodesk\Revit Architecture 2012\Program\RevitAPI.dll</HintPath>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="RevitAPI">
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Revit Quasar Beta 2\Program\RevitAPI.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="RevitAPIUI, Version=2012.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ProgramFiles)\Autodesk\Revit Architecture 2012\Program\RevitAPIUI.dll</HintPath>
+    <Reference Include="RevitAPIUI">
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Revit Quasar Beta 2\Program\RevitAPIUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="WindowsBase" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutBox.designer.cs">
+    <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="App.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="HelpDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HelpDlg.Designer.cs">
+      <DependentUpon>HelpDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="JtLogFile.cs" />
     <Compile Include="JtWindowHandle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,14 +110,14 @@
     <Compile Include="SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SearchForm.designer.cs">
+    <Compile Include="SearchForm.Designer.cs">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SearchHit.cs" />
     <Compile Include="SearchHitNavigator.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SearchHitNavigator.designer.cs">
+    <Compile Include="SearchHitNavigator.Designer.cs">
       <DependentUpon>SearchHitNavigator.cs</DependentUpon>
     </Compile>
     <Compile Include="SearchOptions.cs" />
@@ -116,16 +128,32 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SearchHitNavigator.resx">
       <DependentUpon>SearchHitNavigator.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ADNPlugin-StringSearch.addin" />
+    <EmbeddedResource Include="ImgStringSearch16.png" />
+    <EmbeddedResource Include="ImgStringSearch32.png" />
+    <Content Include="StringSearch.ico" />
+    <None Include="copy_files.bat" />
+    <EmbeddedResource Include="help_text.rtf" />
+    <None Include="ReadMe.txt" />
+    <EmbeddedResource Include="HelpDlg.resx">
+      <DependentUpon>HelpDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -144,20 +172,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="ADNPlugin-StringSearch.addin" />
-    <EmbeddedResource Include="ImgSherlockHolmes16.png" />
-    <EmbeddedResource Include="ImgSherlockHolmes32.png" />
-    <EmbeddedResource Include="ImgSherlockHolmes.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterClean">
-    <Delete Files="$(AppData)\Autodesk\REVIT\Addins\2012\StringSearch.addin" />
+    <Delete Files="$(AppData)\Autodesk\REVIT\Addins\2011\StringSearch.addin" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>echo copying "$(ProjectDir)ADNPlugin-StringSearch.addin" to "..\.."
-copy "$(ProjectDir)ADNPlugin-StringSearch.addin" "$(ProjectDir)..\.."
-echo copying "$(ProjectDir)..\..\ADNPlugin-StringSearch.addin" to "$(AppData)\Autodesk\REVIT\Addins\2012"
-copy "$(ProjectDir)..\..\ADNPlugin-StringSearch.addin" "$(AppData)\Autodesk\REVIT\Addins\2012"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

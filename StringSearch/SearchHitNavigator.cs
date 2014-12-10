@@ -26,40 +26,122 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
 #endregion // Namespaces
 
 namespace ADNPlugin.Revit.StringSearch
 {
-  public partial class SearchHitNavigator : Form
+  /// <summary>
+  /// Modeless form to dsiplay a list of all string search hits.
+  /// User can double click on any row to zoom to and highlight
+  /// that element.
+  /// </summary>
+  partial class SearchHitNavigator : Form
   {
-    Command.SetElementId _set_id;
+    static SearchHitNavigator _singleton_instance = null;
+    static Point? _last_location = null;
+    static Size _last_size;
 
-    public SearchHitNavigator(
-      //SortableBindingList<SearchHit> a,
-      Command.SetElementId set_id )
+    public static bool IsShowing
     {
-      InitializeComponent();
-      _set_id = set_id;
-      this.dataGridView1.CellDoubleClick 
-        += new DataGridViewCellEventHandler( 
-          dataGridView1_CellDoubleClick );
+      get
+      {
+        return null != _singleton_instance;
+      }
     }
 
-    public void SetData( 
-      SortableBindingList<SearchHit> a )
+    public static void Show(
+      SortableBindingList<SearchHit> data,
+      App.SetElementId set_id,
+      JtWindowHandle h )
     {
+      if( null == _singleton_instance )
+      {
+        _singleton_instance
+          = new SearchHitNavigator(
+            data, set_id );
+
+        _singleton_instance.Load 
+          += new EventHandler( OnLoad );
+
+        _singleton_instance.FormClosing
+          += new FormClosingEventHandler(
+            OnFormClosing );
+
+        _singleton_instance.FormClosing
+          += new FormClosingEventHandler(
+            OnFormClosing );
+
+        _singleton_instance.Disposed 
+          += new EventHandler( OnDisposed );
+
+        _singleton_instance.Show( h );
+      }
+      else
+      {
+        _singleton_instance.dataGridView1.DataSource
+          = data;
+      }
+    }
+
+    public static void Shutdown()
+    {
+      if( null != _singleton_instance )
+      {
+        _singleton_instance.Close();
+      }
+    }
+
+    static void OnLoad( 
+      object sender, 
+      EventArgs e )
+    {
+      if( null != _last_location )
+      {
+        _singleton_instance.Location 
+          = ( Point ) _last_location;
+
+        _singleton_instance.Size = _last_size;
+      }
+    }
+
+    static void OnFormClosing( 
+      object sender, 
+      FormClosingEventArgs e )
+    {
+      _last_location = _singleton_instance.Location;
+      _last_size = _singleton_instance.Size;
+    }
+
+    static void OnDisposed( 
+      object sender, 
+      EventArgs e )
+    {
+      _singleton_instance = null;
+    }
+
+    App.SetElementId _set_id;
+
+    SearchHitNavigator(
+      SortableBindingList<SearchHit> a,
+      App.SetElementId set_id )
+    {
+      InitializeComponent();
       dataGridView1.DataSource = a;
+      dataGridView1.CellDoubleClick 
+        += new DataGridViewCellEventHandler( 
+          dataGridView1_CellDoubleClick );
+      _set_id = set_id;
     }
 
     void SetElementIdFromRow(
       int rowIndex,
       bool doubleClick )
     {
-      //
-      // do something on double click, 
+      // Do something on double click, 
       // except when on the header:
-      //
+
       if( rowIndex > -1 )
       {
         DataGridViewRow row
@@ -86,12 +168,5 @@ namespace ADNPlugin.Revit.StringSearch
     {
       SetElementIdFromRow( e.RowIndex, true );
     }
-
-    /*
-     * attempts to select and highlight the search string within the data grid view cell ...
-     * 
-     * http://social.msdn.microsoft.com/Forums/en-US/vbgeneral/thread/43f6b81f-4cb7-4e8e-bd29-e3645f200734
-     * http://www.visualbasicask.com/visual-basic-general/highlight-text-inside-a-datagridview-cell.shtml
-     */
   }
 }

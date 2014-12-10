@@ -23,56 +23,32 @@
 
 #region Namespaces
 using System;
-using System.Diagnostics;
 using System.IO;
-#endregion // Namespaces
+using System.Reflection;
+using System.Windows.Forms;
+using System.Text;
+#endregion
 
 namespace ADNPlugin.Revit.StringSearch
 {
-  /// <summary>
-  /// Helper class to manage a log file.
-  /// </summary>
-  class JtLogFile : IDisposable
+  public partial class HelpDlg : Form
   {
-    string _path;
-    StreamWriter _sw;
+    static string _namespace_prefix
+      = typeof( App ).Namespace + ".";
 
-    public JtLogFile( string basename )
+    public HelpDlg()
     {
-      _path = System.IO.Path.Combine(
-        System.IO.Path.GetTempPath(),
-        basename + ".log" );
-
-      _sw = new StreamWriter( _path, true );
-
-      _sw.WriteLine( "\r\n\r\n{0} Start string search\r\n",
-        DateTime.Now.ToString( "u" ) );
+      InitializeComponent();
     }
 
-    public void Dispose()
+    private void HelpDlg_Load( object sender, EventArgs e )
     {
-      _sw.WriteLine( "\r\n\r\n{0} Terminate string search\r\n",
-        DateTime.Now.ToString( "u" ) );
+      Assembly exe = AboutBox.ExecutingAssembly;
 
-      _sw.Close();
-      _sw.Dispose();
-    }
+      Stream s = exe.GetManifestResourceStream(
+         _namespace_prefix + "help_text.rtf" );
 
-    /// <summary>
-    /// Log a new entry to the file.
-    /// </summary>
-    public void Log( string s )
-    {
-      _sw.WriteLine( s );
-      Debug.WriteLine( s );
-    }
-
-    public string Path
-    {
-      get
-      {
-        return _path;
-      }
+      richTextBox1.LoadFile( s, RichTextBoxStreamType.RichText );
     }
   }
 }

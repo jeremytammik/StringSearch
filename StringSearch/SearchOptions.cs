@@ -24,10 +24,14 @@
 #region Namespaces
 using System;
 using System.Collections.Generic;
+using System.Text;
 #endregion // Namespaces
 
 namespace ADNPlugin.Revit.StringSearch
 {
+  /// <summary>
+  /// Manage the various string search options.
+  /// </summary>
   public class SearchOptions
   {
     public SearchOptions(
@@ -38,12 +42,14 @@ namespace ADNPlugin.Revit.StringSearch
       bool regex,
       //bool elementType,
       //bool nonElementType,
-      bool builtInParams
+      bool builtInParams,
       //bool stringValued,
       //bool intValued,
       //bool realValued,
       //bool elementIdValued,
       //bool nonStringValued 
+      bool standardParams,
+      bool userParams
     )
     {
       SearchString = searchString;
@@ -59,6 +65,8 @@ namespace ADNPlugin.Revit.StringSearch
       //RealValued = realValued;
       //ElementIdValued = elementIdValued;
       //NonStringValued = nonStringValued;
+      StandardParams = standardParams;
+      UserParams = userParams;
     }
 
     public string SearchString { get; set; }
@@ -74,5 +82,7 @@ namespace ADNPlugin.Revit.StringSearch
     //public bool RealValued { get; set; }
     //public bool ElementIdValued { get; set; }
     //public bool NonStringValued { get; set; }
+    public bool StandardParams { get; set; }
+    public bool UserParams { get; set; }
   }
 }
