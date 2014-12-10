@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Text>String Search</Text>
+    <Description>Search globablly through element parameters for a given string</Description>
+    <Assembly>C:\a\src\revit\string_search\src\StringSearch\StringSearch\bin\debug\StringSearch.dll</Assembly>
+    <FullClassName>StringSearch.Command</FullClassName>
+    <ClientId>1de902df-687f-43bb-935e-8a056b24a987</ClientId>
+    <VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
+  </AddIn>
+</RevitAddIns>
