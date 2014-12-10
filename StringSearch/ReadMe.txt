@@ -14,17 +14,16 @@ string.
 
 System Requirements
 -------------------
-This plugin has been tested with Revit Architecture 2014, and requires
-the .NET Framework 4. A pre-built version of the plug-in working on
-both 32- and 64-bit Windows systems is provided.
+This plugin has been tested with Revit Architecture 2015, and requires
+the .NET Framework 4.5.
 
-The source code is included as a Visual Studio 2010 C# project.
+The source code is included as a Visual Studio 2012 C# project.
 It is not required to run the plugin.
 
 
 Installation
 ------------
-The following steps are for using the plugin with Revit 2014.
+The following steps are for using the plugin with Revit 2015.
 
 1. If you are using Vista or Windows 7, first check whether the zip
 file needs to be unblocked. Right-click on the zip file and select
@@ -34,11 +33,11 @@ file needs to be unblocked. Right-click on the zip file and select
 manifest file "ADNPlugin-StringSearch.addin" to one of the following
 locations:
 
-  C:\Users\<your login>\AppData\Roaming\Autodesk\Revit\Addins\2014
+  C:\Users\<your login>\AppData\Roaming\Autodesk\Revit\Addins\2015
 
 or
 
-  C:\ProgramData\Autodesk\Revit\Addins\2014
+  C:\ProgramData\Autodesk\Revit\Addins\2015
 
 The first location will make the plugin available for your use only,
 while the second is for all users of your computer.
@@ -193,6 +192,7 @@ Release History
 1.0  Original release
 2.0  Migrated to Revit 2013
 3.0  Migrated to Revit 2014
+2015.0.0.4 Migrated to Revit 2015
 
 Future Enhancement Wishes
 -------------------------
@@ -202,7 +202,7 @@ Future Enhancement Wishes
 - Support for search and replace.
 
 
-(C) Copyright 2011-2013 by Autodesk, Inc.
+(C) Copyright 2011-2014 by Autodesk, Inc.
 
 Permission to use, copy, modify, and distribute this software in
 object code form for any purpose and without fee is hereby granted,
