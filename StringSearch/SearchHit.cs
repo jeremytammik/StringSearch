@@ -53,7 +53,7 @@ namespace ADNPlugin.Revit.StringSearch
 
       ElementType elementType = ( null == typeId )
         ? null
-        : e.Document.get_Element( typeId ) as ElementType;
+        : e.Document.GetElement( typeId ) as ElementType;
 
       FamilyInstance fi = e as FamilyInstance;
 

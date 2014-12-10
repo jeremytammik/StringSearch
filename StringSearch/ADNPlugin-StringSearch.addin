@@ -4,7 +4,7 @@
     <Name>StringSearch</Name>
     <Assembly>ADNPlugin-StringSearch.dll</Assembly>
     <FullClassName>ADNPlugin.Revit.StringSearch.App</FullClassName>
-    <ClientId>bfad99cf-0d2d-4eb5-93f4-60942372fce8</ClientId>
+    <ClientId>f5316540-d7a3-4af9-9083-cd5fe6c9e224</ClientId>
     <VendorId>ADNP</VendorId>
     <VendorDescription>Autodesk, Inc. www.autodesk.com</VendorDescription>
   </AddIn>

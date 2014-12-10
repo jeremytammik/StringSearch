@@ -47,7 +47,8 @@ namespace ADNPlugin.Revit.StringSearch
 
     const string _tooltip_long_description
       = "Search for a given string within element parameter values."
-      + "\r\n\r\nSpecify the target string to search for and various options to select the elements and parameters to examine.";
+      + "\r\n\r\nSpecify the target string to search for and various options to select the elements and parameters to examine."
+      + "\r\n\r\nFor more information, right click on the search form and select 'Help'.";
 
     static string _text = AboutBox.AssemblyProduct;
 
@@ -121,18 +122,6 @@ namespace ADNPlugin.Revit.StringSearch
       d.Image = NewBitmapImage( exe, "ImgStringSearch16.png" );
       d.LargeImage = NewBitmapImage( exe, "ImgStringSearch32.png" );
       d.LongDescription = _tooltip_long_description;
-
-      // F1 help 
-      string path2;
-      path2 = System.IO.Path.GetDirectoryName(
-         System.Reflection.Assembly.GetExecutingAssembly().Location);
-
-      ContextualHelp contextHelp = new ContextualHelp(
-          ContextualHelpType.ChmFile,
-          path2 + "/Resources/ADNStringSearchHelp.htm"); // hard coding for simplicity. 
-
-      d.SetContextualHelp(contextHelp);
-
 
       rp.AddItem( d );
       #endregion // Create ribbon panel
@@ -270,7 +259,7 @@ namespace ADNPlugin.Revit.StringSearch
           = uidoc.Document;
 
         ElementId eid = new ElementId( id );
-        Element e = doc.get_Element( eid );
+        Element e = doc.GetElement( eid );
 
         Debug.Print(
           "Element id {0} requested --> {1}",

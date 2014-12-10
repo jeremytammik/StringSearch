@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<ApplicationPackage SchemaVersion="1.0" AutodeskProduct="Revit" ProductType="Application" Name="String Search" AppVersion="1.0.0" Description="ADN Plugin of the Month: String Search" Author="Jeremy Tammik" Icon="./Contents/Resources/ImgStringSearch_Thumbnail.bmp" OnlineDocumentation="http://labs.autodesk.com/utilities/ADN_Plugins" HelpFile="./Contents/Resources/ADNStringSearchHelp.htm" ProductCode="{85E73487-BFDE-46F1-905A-D812280B7B40}" UpgradeCode="{46A404E3-E76E-4200-9526-4B77C853644C}">
-  <RuntimeRequirements OS="Win32|Win64" Platform="Revit" SeriesMin="2013" SeriesMax="2013" />
-  <CompanyDetails Name="Autodesk" Url="http://labs.autodesk.com/utilities/ADN_Plugins" Email="labs.plugins@autodesk.com" />
-</ApplicationPackage>

@@ -11,27 +11,20 @@ Description
 Search Revit project elements and their parameter values for a given
 string.
 
+
 System Requirements
 -------------------
-This plugin has been tested with Revit Architecture 2011 and 2012, 
-and requires the .NET Framework 3.5.
+This plugin has been tested with Revit Architecture 2013, and requires 
+the .NET Framework 4. A pre-built version of the plug-in working on
+both 32- and 64-bit Windows systems is provided.
 
-A pre-built version of the plug-in has been provided which works on
-both Revit 2011 and 2012, and on both the 32- and 64-bit Windows
-systems.
+The source code is included as a Visual Studio 2010 C# project.
+It is not required to run the plugin.
 
-The plugin has not been tested with all Revit verticals, but should
-work (see "Feedback", below, otherwise).
-
-The source code has been provided as a Visual Studio 2008 C# project.
-It is not required to run the plugin. To debug it in Revit 2012, you
-need to migrate it to Visual Studio 2010.
 
 Installation
 ------------
-The following steps are for using the plugin with Revit 2012. If you
-are using Revit 2011, then please replace "2012" by "2011" in the
-paths listed below.
+The following steps are for using the plugin with Revit 2013.
 
 1. If you are using Vista or Windows 7, first check whether the zip
 file needs to be unblocked. Right-click on the zip file and select
@@ -44,12 +37,12 @@ locations:
 For Windows XP: 
 
   C:\Documents and Settings\<your login>\Application Data\
-    Autodesk\Revit\Addins\2012
+    Autodesk\Revit\Addins\2013
 
 or 
 
   C:\Documents and Settings\All Users\Application Data\
-    Autodesk\Revit\Addins\2012
+    Autodesk\Revit\Addins\2013
 
 
 The first location will make the plugin available for your use only,
@@ -60,11 +53,11 @@ permission issues (e.g., when UAC is turned on).
 
 For Vista/Windows 7:
 
-  C:\Users\<your login>\AppData\Roaming\Autodesk\Revit\Addins\2012
+  C:\Users\<your login>\AppData\Roaming\Autodesk\Revit\Addins\2013
 
 or 
 
-  C:\ProgramData\Autodesk\Revit\Addins\2012
+  C:\ProgramData\Autodesk\Revit\Addins\2013
 
 The first location will make the plugin available for your use only,
 while the second is for all users of your computer.
@@ -82,6 +75,7 @@ following line in the add-in manifest file
 3. Once installed, the "String Search" command becomes available in
 Revit.  Go to the "Add-Ins" tab > "String Search" panel. It shows
 the "String Search" button to launch the command. 
+
 
 Usage
 -----
@@ -104,6 +98,7 @@ search form and select 'Display Log File'.
 
 The string matching options and the elements and parameters to 
 search can be modified as follows.
+
 
 Options
 -------
@@ -157,6 +152,7 @@ parameters. Again, you can search in all of them using the asterisk
 '*', or pick a specific one. Searching all built-in parameters
 across the entire project can be extremely slow. 
 
+
 Examples
 --------
 To search for a string 'abc' in all parameter values of all elements
@@ -176,38 +172,46 @@ of the built-in parameter option as follows:
 
 Click OK and examine the results in the navigator.
 
+
 Uninstallation
 --------------
 Simply removing "ADNPlugin-StringSearch.addin" file from your
 installation folder will uninstall the plugin. 
 
+
 Limitations and Known Issues
 ----------------------------
 None.
+
 
 Author
 ------
 This plugin was written by Jeremy Tammik of the Autodesk Developer
 Technical Services team. 
 
+
 Acknowledgements
 ----------------
 Many thanks to Saikat Bhattacharya for his careful review and many
 valuable suggestions!
+
 
 Further Reading
 ---------------
 For more information on developing with Revit, please visit the
 Revit Developer Center at http://www.autodesk.com/developrevit.
 
+
 Feedback
 --------
 Email us at labs.plugins@autodesk.com with feedback or requests for
 enhancements.
 
+
 Release History
 ---------------
-1.0    Original release
+1.0  Original release
+2.0  Migrated to Revit 2013
 
 
 Future Enhancement Wishes
@@ -218,7 +222,7 @@ Future Enhancement Wishes
 - Support for search and replace.
 
 
-(C) Copyright 2011 by Autodesk, Inc. 
+(C) Copyright 2011-2012 by Autodesk, Inc. 
 
 Permission to use, copy, modify, and distribute this software in
 object code form for any purpose and without fee is hereby granted, 
