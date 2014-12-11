@@ -163,12 +163,6 @@ Simply removing "ADNPlugin-StringSearch.addin" file from your
 installation folder will uninstall the plugin.
 
 
-Limitations and Known Issues
-----------------------------
-
-None.
-
-
 Author
 ------
 
@@ -196,17 +190,18 @@ For more information on developing with Revit, please visit the
 Feedback
 --------
 
-Email us at labs.plugins@autodesk.com with feedback or requests for enhancements
+Email us at labs.plugins@autodesk.com with feedback or requests for enhancements,
 or submit a comment to [The Building Coder](http://thebuildingcoder.typepad.com).
 
 
 Release History
 ---------------
 
-1.0  Original release
-2.0  Migrated to Revit 2013
-3.0  Migrated to Revit 2014
-2015.0.0.0 Migrated to Revit 2015
+- [0.0](https://github.com/jeremytammik/StringSearch/releases/tag/2011.0.0.0) Pre-release for Revit 2011
+- [1.0](https://github.com/jeremytammik/StringSearch/releases/tag/2012.0.0.0)  Original release for Revit 2012
+- [2.0](https://github.com/jeremytammik/StringSearch/releases/tag/2013.0.0.2)  Migrated to Revit 2013
+- [3.0](https://github.com/jeremytammik/StringSearch/releases/tag/2014.0.0.3)  Migrated to Revit 2014
+- [2015.0.0.0](https://github.com/jeremytammik/StringSearch/releases/tag/2015.0.0.0) Migrated to Revit 2015
 
 
 Future Enhancement Wishes
