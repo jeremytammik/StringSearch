@@ -192,7 +192,7 @@ Release History
 1.0  Original release
 2.0  Migrated to Revit 2013
 3.0  Migrated to Revit 2014
-2015.0.0.4 Migrated to Revit 2015
+2015.0.0.0 Migrated to Revit 2015
 
 Future Enhancement Wishes
 -------------------------
