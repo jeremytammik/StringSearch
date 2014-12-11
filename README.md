@@ -85,24 +85,24 @@ search can be modified as follows.
 Options
 -------
 
-Category: Limit the search to elements belonging to a specific
+**Category:** Limit the search to elements belonging to a specific
 category. All other categories will be skipped. Specify an
 asterisk '*' to search all categories. This is the default setting.
 
-Parameter name: You can specify the name of a specific parameter
+**Parameter name:** You can specify the name of a specific parameter
 to search in. All other parameters will be skipped. Specify an
 asterisk '*' to search all parameters. This is the default setting.
 
-Find options: Match case and match whole parameter limit the string
+**Find options:** Match case and match whole parameter limit the string
 pattern matching to more specific cases, i.e. the upper and lower
 case of each character must match, and the specified search string
 must match the entire parameter value.
 
-Element selection: You can search either the currently selected
+**Element selection:** You can search either the currently selected
 element set, all elements in the current view, or all elements
 in the entire project. The latter can be slow.
 
-Instances versus Types and Symbols: You can specify whether to
+**Instances versus Types and Symbols:** You can specify whether to
 search in the BIM elements themselves, such as walls and family
 instances, or in the element types, such as wall types and family
 symbols. When searching element types, there is no way to limit the
@@ -113,11 +113,11 @@ additional to instances, it is complementary. You can search either
 element types (derived from ElementType in the API) or instances,
 but not both at once.
 
-Parameter selection: You can select whether only standard built-in
+**Parameter selection:** You can select whether only standard built-in
 Revit parameters are searched, or user-defined family and shared
 parameters, or both.
 
-Advanced: You have the option of using a regular expression to
+**Advanced:** You have the option of using a regular expression to
 specify the search string. This option is intended for users with
 advanced programming knowledge and is not suited for non-
 programmers. The .NET RegEx library is used for this.
