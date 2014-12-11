@@ -35,11 +35,15 @@ file needs to be unblocked. Right-click on the zip file and select
 manifest file "ADNPlugin-StringSearch.addin" to one of the following
 locations:
 
+
     C:\Users\<your login>\AppData\Roaming\Autodesk\Revit\Addins\2015
+
 
 or
 
+
     C:\ProgramData\Autodesk\Revit\Addins\2015
+
 
 The first location will make the plugin available for your use only,
 while the second is for all users of your computer.
@@ -51,7 +55,9 @@ If you decide on a different location for the DLL, please modify the
 following line in the add-in manifest file
 "ADNPlugin-StringSearch.addin" to match your desired location:
 
-    <Assembly>.\ADNPlugin-StringSearch.dll</Assembly>
+
+        <Assembly>.\ADNPlugin-StringSearch.dll</Assembly>
+
 
 3. Once installed, the "String Search" command becomes available in
 Revit.  Go to the "Add-Ins" tab > "String Search" panel. It shows
