@@ -35,7 +35,7 @@ file needs to be unblocked. Right-click on the zip file and select
 manifest file "ADNPlugin-StringSearch.addin" to one of the following
 locations:
 
-- C:\Users\**your login**\AppData\Roaming\Autodesk\Revit\Addins\2015
+- C:\Users\ *your login* \AppData\Roaming\Autodesk\Revit\Addins\2015
 
 or
 
@@ -53,8 +53,7 @@ following line in the add-in manifest file
 
     <Assembly>.\ADNPlugin-StringSearch.dll</Assembly>
 
-
-3. Once installed, the "String Search" command becomes available in
+Once installed, the "String Search" command becomes available in
 Revit.  Go to the "Add-Ins" tab > "String Search" panel. It shows
 the "String Search" button to launch the command.
 
