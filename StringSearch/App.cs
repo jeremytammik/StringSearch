@@ -41,7 +41,7 @@ namespace ADNPlugin.Revit.StringSearch
   /// String search external application implementation 
   /// compatible with both Revit 2011 and 2012 API.
   /// </summary>
-  [Regeneration( RegenerationOption.Manual )] // 2011
+  //[Regeneration( RegenerationOption.Manual )] // 2011
   class App : IExternalApplication
   {
     const string _name = "StringSearch";

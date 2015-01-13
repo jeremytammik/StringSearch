@@ -40,7 +40,7 @@ namespace ADNPlugin.Revit.StringSearch
   /// String search external command implementation 
   /// compatible with both Revit 2011 and 2012 API.
   /// </summary>
-  [Regeneration( RegenerationOption.Manual )] // 2011
+  //[Regeneration( RegenerationOption.Manual )] // 2011
   [Transaction( TransactionMode.ReadOnly )]
   public class Command : IExternalCommand
   {
