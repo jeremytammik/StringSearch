@@ -243,9 +243,9 @@ namespace ADNPlugin.Revit.StringSearch
 
       Parameter p;
 
-      // Do we search for some specific parameter?
+      // Do we search for some specific parameters?
 
-      Definition def = null;
+      List<Definition> defs = null;
 
       string parameterName = _searchOptions.ParameterName;
 
@@ -259,18 +259,37 @@ namespace ADNPlugin.Revit.StringSearch
               typeof( BuiltInParameter ), parameterName, true );
 
             p = e.get_Parameter( bip );
+
+            if( null != p )
+            {
+              defs = new List<Definition>( 1 );
+              defs.Add( p.Definition );
+            }
           }
           else
           {
-            p = e.get_Parameter( parameterName );
+            //p = e.get_Parameter( parameterName );
+
+            IList<Parameter> ps = e.GetParameters( 
+              parameterName );
+
+            if( 0 < ps.Count )
+            {
+              defs = new List<Definition>( ps.Count );
+
+              foreach( Parameter q in ps )
+              {
+                defs.Add( q.Definition );
+              }
+            }
           }
-          if( null != p )
-          {
-            def = p.Definition;
-            break;
-          }
+          //if( null != p )
+          //{
+          //  def = p.Definition;
+          //  break;
+          //}
         }
-        if( null == def )
+        if( null == defs )
         {
           message = string.Format(
             "None of the selected elements have any parameter '{0}'",
@@ -323,11 +342,14 @@ namespace ADNPlugin.Revit.StringSearch
       {
         foundOnElement = false;
 
-        if( null != def )
+        if( null != defs )
         {
-          p = e.get_Parameter( def );
-          foundOnElement = SearchParameter( 
-            data, e, p, parameterName, regex );
+          foreach( Definition d in defs )
+          {
+            p = e.get_Parameter( d );
+            foundOnElement |= SearchParameter(
+              data, e, p, parameterName, regex );
+          }
         }
         else if( _searchOptions.BuiltInParams )
         {
