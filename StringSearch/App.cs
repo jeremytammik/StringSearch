@@ -23,6 +23,7 @@
 
 #region Namespaces
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Media.Imaging;
@@ -267,9 +268,14 @@ namespace ADNPlugin.Revit.StringSearch
 
         // No transaction required:
 
-        uidoc.Selection.Elements.Clear();
-        uidoc.Selection.Elements.Add( e );
-        uidoc.ShowElements( e );
+        //uidoc.Selection.Elements.Clear();
+        //uidoc.Selection.Elements.Add( e );
+        //uidoc.ShowElements( e );
+
+        List<ElementId> ids = new List<ElementId>( 1 );
+        ids.Add( eid );
+        uidoc.Selection.SetElementIds( ids );
+        uidoc.ShowElements( ids );
 
         _pending_element_id = 0;
       }
