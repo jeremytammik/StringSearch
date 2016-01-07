@@ -6,8 +6,8 @@ echo Project directory: "%a%"
 echo Application data: "%AppData%"
 
 echo Copying StringSearch assembly and add-in manifest to Revit Addins folder...
-copy %a%bin\Debug\ADNPlugin-StringSearch.dll "%AppData%\Autodesk\REVIT\Addins\2015"
-copy %a%ADNPlugin-StringSearch.addin "%AppData%\Autodesk\REVIT\Addins\2015"
+copy %a%bin\Debug\ADNPlugin-StringSearch.dll "%AppData%\Autodesk\REVIT\Addins\2016"
+copy %a%ADNPlugin-StringSearch.addin "%AppData%\Autodesk\REVIT\Addins\2016"
 
 rem echo copying StringSearch assembly and add-in manifest to top level directory...
 rem copy %a%bin\Debug\ADNPlugin-StringSearch.dll %a%..
