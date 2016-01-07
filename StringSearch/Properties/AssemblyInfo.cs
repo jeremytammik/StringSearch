@@ -35,7 +35,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "Autodesk Inc." )]
 [assembly: AssemblyProduct( "String Search" )]
-[assembly: AssemblyCopyright( "Copyright 2011-2014 © Autodesk Inc." )]
+[assembly: AssemblyCopyright( "Copyright (C) 2011-2015 Jeremy Tammik, Autodesk Inc." )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
@@ -59,6 +59,7 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 //
 // 2015-01-13 2015.0.0.1 eliminated all obsolete API usage warnings, potentially search multiple identically named parameters
+// 2016-01-07 2016.0.0.0 flat migration to Revit 2016
 //
-[assembly: AssemblyVersion("2015.0.0.1")]
-[assembly: AssemblyFileVersion( "2015.0.0.1" )]
+[assembly: AssemblyVersion("2016.0.0.0")]
+[assembly: AssemblyFileVersion( "2016.0.0.0" )]
